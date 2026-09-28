@@ -1,0 +1,2091 @@
+{
+  "info": {
+    "_postman_id": "73e03613-111d-476d-be62-44bb1126ace4",
+    "name": "Quero Trabalhar API - MVP",
+    "description": "Coleção para testar os endpoints do MVP da API Quero Trabalhar. Faça login primeiro para preencher {{jwt_token}}.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{jwt_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "00 - Autenticação",
+      "item": [
+        {
+          "name": "Login - Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{admin_email}}\",\n  \"password\": \"{{admin_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Verifica se a requisição deu sucesso (Status 200)",
+                  "if (pm.response.code === 200) {",
+                  "    // Puxa o cabeçalho Authorization da resposta",
+                  "    let authHeader = pm.response.headers.get(\"Authorization\");",
+                  "    if (authHeader) {",
+                  "        // Remove a palavra \"Bearer \" e os espaços, pegando só o token limpo",
+                  "        let tokenLimpo = authHeader.replace(\"Bearer\", \"\").trim();",
+                  "        // Salva o token em uma variável de ambiente do Postman chamada 'jwt_token'",
+                  "        pm.environment.set(\"jwt_token\", tokenLimpo);",
+                  "        console.log(\"Token capturado e salvo com sucesso!\");",
+                  "    } else {",
+                  "        console.log(\"Header de Authorization não encontrado na resposta.\");",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login - Candidato Dan",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{candidato_email}}\",\n  \"password\": \"{{candidato_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Verifica se a requisição deu sucesso (Status 200)",
+                  "if (pm.response.code === 200) {",
+                  "    // Puxa o cabeçalho Authorization da resposta",
+                  "    let authHeader = pm.response.headers.get(\"Authorization\");",
+                  "    if (authHeader) {",
+                  "        // Remove a palavra \"Bearer \" e os espaços, pegando só o token limpo",
+                  "        let tokenLimpo = authHeader.replace(\"Bearer\", \"\").trim();",
+                  "        // Salva o token em uma variável de ambiente do Postman chamada 'jwt_token'",
+                  "        pm.environment.set(\"jwt_token\", tokenLimpo);",
+                  "        console.log(\"Token capturado e salvo com sucesso!\");",
+                  "    } else {",
+                  "        console.log(\"Header de Authorization não encontrado na resposta.\");",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login - Recrutador RH",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{recrutador_email}}\",\n  \"password\": \"{{recrutador_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Verifica se a requisição deu sucesso (Status 200)",
+                  "if (pm.response.code === 200) {",
+                  "    // Puxa o cabeçalho Authorization da resposta",
+                  "    let authHeader = pm.response.headers.get(\"Authorization\");",
+                  "    if (authHeader) {",
+                  "        // Remove a palavra \"Bearer \" e os espaços, pegando só o token limpo",
+                  "        let tokenLimpo = authHeader.replace(\"Bearer\", \"\").trim();",
+                  "        // Salva o token em uma variável de ambiente do Postman chamada 'jwt_token'",
+                  "        pm.environment.set(\"jwt_token\", tokenLimpo);",
+                  "        console.log(\"Token capturado e salvo com sucesso!\");",
+                  "    } else {",
+                  "        console.log(\"Header de Authorization não encontrado na resposta.\");",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login - Usuário Duplo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{duplo_email}}\",\n  \"password\": \"{{duplo_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Verifica se a requisição deu sucesso (Status 200)",
+                  "if (pm.response.code === 200) {",
+                  "    // Puxa o cabeçalho Authorization da resposta",
+                  "    let authHeader = pm.response.headers.get(\"Authorization\");",
+                  "    if (authHeader) {",
+                  "        // Remove a palavra \"Bearer \" e os espaços, pegando só o token limpo",
+                  "        let tokenLimpo = authHeader.replace(\"Bearer\", \"\").trim();",
+                  "        // Salva o token em uma variável de ambiente do Postman chamada 'jwt_token'",
+                  "        pm.environment.set(\"jwt_token\", tokenLimpo);",
+                  "        console.log(\"Token capturado e salvo com sucesso!\");",
+                  "    } else {",
+                  "        console.log(\"Header de Authorization não encontrado na resposta.\");",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "01 - Localidades",
+      "item": [
+        {
+          "name": "Listar países",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/localidades/paises?termo=Bra",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "localidades",
+                "paises"
+              ],
+              "query": [
+                {
+                  "key": "termo",
+                  "value": "Bra",
+                  "disabled": false
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar estados por país",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/localidades/estados?paisId={{pais_id}}&termo=Para",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "localidades",
+                "estados"
+              ],
+              "query": [
+                {
+                  "key": "paisId",
+                  "value": "{{pais_id}}",
+                  "disabled": false
+                },
+                {
+                  "key": "termo",
+                  "value": "Para",
+                  "disabled": false
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar cidades por estado",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/localidades/cidades?estadoId={{estado_id}}&termo=Jo",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "localidades",
+                "cidades"
+              ],
+              "query": [
+                {
+                  "key": "estadoId",
+                  "value": "{{estado_id}}",
+                  "disabled": false
+                },
+                {
+                  "key": "termo",
+                  "value": "Jo",
+                  "disabled": false
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 - Tipos de Emprego",
+      "item": [
+        {
+          "name": "Listar tipos aprovados",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/tipos-de-emprego/aprovados",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "tipos-de-emprego",
+                "aprovados"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Sugerir tipo de emprego",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/tipos-de-emprego/sugerir",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "tipos-de-emprego",
+                "sugerir"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Tipo Sugerido Postman\",\n  \"descricao\": \"Sugestão criada pela coleção do Postman.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                  "  try {",
+                  "    const json = pm.response.json();",
+                  "    if (json && json.id) pm.environment.set('tipo_pendente_id', json.id);",
+                  "  } catch (e) {}",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Buscar tipo por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/tipos-de-emprego/{{tipo_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "tipos-de-emprego",
+                "{{tipo_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 - Usuários",
+      "item": [
+        {
+          "name": "Cadastrar usuário",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/cadastrar",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "cadastrar"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cpf\": \"12345678909\",\n  \"nome\": \"Usuário Postman\",\n  \"telefone\": \"83999990009\",\n  \"email\": \"postman.user@example.com\",\n  \"senha\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                  "  try {",
+                  "    const json = pm.response.json();",
+                  "    if (json && json.id) pm.environment.set('usuario_id', json.id);",
+                  "  } catch (e) {}",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Buscar usuário autenticado",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Atualizar usuário autenticado",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Usuário Postman Atualizado\",\n  \"telefone\": \"83999990010\",\n  \"email\": \"postman.user@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Remover usuário autenticado",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Adicionar perfil candidato ao usuário autenticado",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/me/perfil-candidato",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "perfil-candidato"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Remover perfil candidato do usuário autenticado",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/me/perfil-candidato",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "perfil-candidato"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Adicionar perfil recrutador ao usuário autenticado",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/me/perfil-recrutador",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "perfil-recrutador"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nomeDaEmpresa\": \"Empresa do Recrutador Postman\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Remover perfil recrutador do usuário autenticado",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/me/perfil-recrutador",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "perfil-recrutador"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Alterar senha do usuário autenticado",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/me/senha",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "senha"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"senhaAtual\": \"123456\",\n  \"novaSenha\": \"1234567\",\n  \"confirmacaoNovaSenha\": \"1234567\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 - Empresas",
+      "item": [
+        {
+          "name": "Listar empresas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/empresas?page=0&size=10&sort=nome,asc&termo=&paisId={{pais_id}}&estadoId={{estado_id}}&cidadeId={{cidade_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "empresas"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0",
+                  "disabled": false
+                },
+                {
+                  "key": "size",
+                  "value": "10",
+                  "disabled": false
+                },
+                {
+                  "key": "sort",
+                  "value": "nome,asc",
+                  "disabled": false
+                },
+                {
+                  "key": "termo",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "paisId",
+                  "value": "{{pais_id}}",
+                  "disabled": true
+                },
+                {
+                  "key": "estadoId",
+                  "value": "{{estado_id}}",
+                  "disabled": true
+                },
+                {
+                  "key": "cidadeId",
+                  "value": "{{cidade_id}}",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Criar empresa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/empresas",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "empresas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Empresa Postman\",\n  \"descricao\": \"Empresa criada pela coleção do Postman.\",\n  \"site\": \"https://empresa-postman.example.com\",\n  \"emailPublico\": \"contato@empresa-postman.example.com\",\n  \"telefonePublico\": \"83999990011\",\n  \"paisId\": \"{{pais_id}}\",\n  \"estadoId\": \"{{estado_id}}\",\n  \"cidadeId\": \"{{cidade_id}}\",\n  \"localidadeTexto\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                  "  try {",
+                  "    const json = pm.response.json();",
+                  "    if (json && json.id) pm.environment.set('empresa_id', json.id);",
+                  "  } catch (e) {}",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Buscar empresa por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/empresas/{{empresa_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "empresas",
+                "{{empresa_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar oportunidades públicas da empresa",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/empresas/{{empresa_id}}/oportunidades?page=0&size=10&sort=id,desc",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "empresas",
+                "{{empresa_id}}",
+                "oportunidades"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0",
+                  "disabled": false
+                },
+                {
+                  "key": "size",
+                  "value": "10",
+                  "disabled": false
+                },
+                {
+                  "key": "sort",
+                  "value": "id,desc",
+                  "disabled": false
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar recrutadores da empresa",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/empresas/{{empresa_id}}/recrutadores",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "empresas",
+                "{{empresa_id}}",
+                "recrutadores"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 - Oportunidades",
+      "item": [
+        {
+          "name": "Listar oportunidades públicas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/oportunidades?page=0&size=10&sort=id,desc&termo=Dev&tipoDeEmpregoId={{tipo_id}}&empresaId={{empresa_id}}&recrutadorId={{recrutador_id}}&paisId={{pais_id}}&estadoId={{estado_id}}&cidadeId={{cidade_id}}&modalidade=REMOTO",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "oportunidades"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0",
+                  "disabled": false
+                },
+                {
+                  "key": "size",
+                  "value": "10",
+                  "disabled": false
+                },
+                {
+                  "key": "sort",
+                  "value": "id,desc",
+                  "disabled": false
+                },
+                {
+                  "key": "termo",
+                  "value": "Dev",
+                  "disabled": true
+                },
+                {
+                  "key": "tipoDeEmpregoId",
+                  "value": "{{tipo_id}}",
+                  "disabled": true
+                },
+                {
+                  "key": "empresaId",
+                  "value": "{{empresa_id}}",
+                  "disabled": true
+                },
+                {
+                  "key": "recrutadorId",
+                  "value": "{{recrutador_id}}",
+                  "disabled": true
+                },
+                {
+                  "key": "paisId",
+                  "value": "{{pais_id}}",
+                  "disabled": true
+                },
+                {
+                  "key": "estadoId",
+                  "value": "{{estado_id}}",
+                  "disabled": true
+                },
+                {
+                  "key": "cidadeId",
+                  "value": "{{cidade_id}}",
+                  "disabled": true
+                },
+                {
+                  "key": "modalidade",
+                  "value": "REMOTO",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Criar oportunidade",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/oportunidades",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "oportunidades"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"descricao\": \"Vaga Postman Java Backend\",\n  \"tipoDeEmpregoId\": \"{{tipo_id}}\",\n  \"modalidade\": \"REMOTO\",\n  \"paisId\": \"{{pais_id}}\",\n  \"estadoId\": \"{{estado_id}}\",\n  \"cidadeId\": \"{{cidade_id}}\",\n  \"localidadeTexto\": null,\n  \"publicarComoEmpresa\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                  "  try {",
+                  "    const json = pm.response.json();",
+                  "    if (json && json.id) pm.environment.set('vaga_id', json.id);",
+                  "  } catch (e) {}",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Buscar oportunidade por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/oportunidades/{{vaga_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "oportunidades",
+                "{{vaga_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Atualizar oportunidade",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/oportunidades/{{vaga_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "oportunidades",
+                "{{vaga_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"descricao\": \"Vaga Postman Java Backend\",\n  \"tipoDeEmpregoId\": \"{{tipo_id}}\",\n  \"modalidade\": \"REMOTO\",\n  \"paisId\": \"{{pais_id}}\",\n  \"estadoId\": \"{{estado_id}}\",\n  \"cidadeId\": \"{{cidade_id}}\",\n  \"localidadeTexto\": null,\n  \"publicarComoEmpresa\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Remover oportunidade",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/oportunidades/{{vaga_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "oportunidades",
+                "{{vaga_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 - Recrutadores",
+      "item": [
+        {
+          "name": "Buscar meu perfil de recrutador",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/recrutadores/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "recrutadores",
+                "me"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar empresa vinculada ao recrutador",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/recrutadores/me/empresa",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "recrutadores",
+                "me",
+                "empresa"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Solicitar vínculo com empresa",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/recrutadores/me/empresa/{{empresa_id}}/solicitar-vinculo",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "recrutadores",
+                "me",
+                "empresa",
+                "{{empresa_id}}",
+                "solicitar-vinculo"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar minhas oportunidades",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/recrutadores/me/oportunidades?page=0&size=10&sort=id,desc&statusLocalidade=VALIDADA",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "recrutadores",
+                "me",
+                "oportunidades"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0",
+                  "disabled": false
+                },
+                {
+                  "key": "size",
+                  "value": "10",
+                  "disabled": false
+                },
+                {
+                  "key": "sort",
+                  "value": "id,desc",
+                  "disabled": false
+                },
+                {
+                  "key": "statusLocalidade",
+                  "value": "VALIDADA",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 - Candidatos e Interesses",
+      "item": [
+        {
+          "name": "Listar vagas de interesse do candidato",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/candidatos/me/interesses/vagas?page=0&size=10&sort=id,desc&statusLocalidade=VALIDADA",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "candidatos",
+                "me",
+                "interesses",
+                "vagas"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0",
+                  "disabled": false
+                },
+                {
+                  "key": "size",
+                  "value": "10",
+                  "disabled": false
+                },
+                {
+                  "key": "sort",
+                  "value": "id,desc",
+                  "disabled": false
+                },
+                {
+                  "key": "statusLocalidade",
+                  "value": "VALIDADA",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Demonstrar interesse em vaga",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/candidatos/me/interesses/vagas/{{vaga_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "candidatos",
+                "me",
+                "interesses",
+                "vagas",
+                "{{vaga_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Remover interesse em vaga",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/candidatos/me/interesses/vagas/{{vaga_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "candidatos",
+                "me",
+                "interesses",
+                "vagas",
+                "{{vaga_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "08 - Experiências Profissionais",
+      "item": [
+        {
+          "name": "Listar minhas experiências",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/me/perfil-candidato/experiencias",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "perfil-candidato",
+                "experiencias"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Criar experiência",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/me/perfil-candidato/experiencias",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "perfil-candidato",
+                "experiencias"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipoDeEmpregoId\": \"{{tipo_id}}\",\n  \"descricao\": \"Experiência criada pela coleção do Postman.\",\n  \"dataInicio\": \"2023-01-10\",\n  \"dataFim\": \"2024-01-10\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                  "  try {",
+                  "    const json = pm.response.json();",
+                  "    if (json && json.id) pm.environment.set('experiencia_id', json.id);",
+                  "  } catch (e) {}",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Atualizar experiência",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/me/perfil-candidato/experiencias/{{experiencia_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "perfil-candidato",
+                "experiencias",
+                "{{experiencia_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipoDeEmpregoId\": \"{{tipo_id}}\",\n  \"descricao\": \"Experiência atualizada pela coleção do Postman.\",\n  \"dataInicio\": \"2023-02-01\",\n  \"dataFim\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Remover experiência",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/me/perfil-candidato/experiencias/{{experiencia_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "perfil-candidato",
+                "experiencias",
+                "{{experiencia_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "09 - Indicações",
+      "item": [
+        {
+          "name": "Criar indicação",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/indicacoes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "indicacoes"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuarioIndicadoId\": \"{{usuario_id}}\",\n  \"mensagem\": \"Indicação criada pela coleção do Postman.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                  "  try {",
+                  "    const json = pm.response.json();",
+                  "    if (json && json.id) pm.environment.set('indicacao_id', json.id);",
+                  "  } catch (e) {}",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar indicações dadas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/indicacoes/me/dadas",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "indicacoes",
+                "me",
+                "dadas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar indicações recebidas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/indicacoes/me/recebidas",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "indicacoes",
+                "me",
+                "recebidas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Remover indicação",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/indicacoes/{{indicacao_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "indicacoes",
+                "{{indicacao_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "10 - Administração",
+      "item": [
+        {
+          "name": "Recrutadores - empresa",
+          "item": [
+            {
+              "name": "Aprovar vínculo empresa do recrutador",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/recrutadores/{{recrutador_id}}/empresa/aprovar",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "recrutadores",
+                    "{{recrutador_id}}",
+                    "empresa",
+                    "aprovar"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Recusar vínculo empresa do recrutador",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/recrutadores/{{recrutador_id}}/empresa/recusar",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "recrutadores",
+                    "{{recrutador_id}}",
+                    "empresa",
+                    "recusar"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Usuários",
+          "item": [
+            {
+              "name": "Listar usuários",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/usuarios?page=0&size=10&sort=nome,asc&termo=&temPerfilCandidato=true&temPerfilRecrutador=true",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "usuarios"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0",
+                      "disabled": false
+                    },
+                    {
+                      "key": "size",
+                      "value": "10",
+                      "disabled": false
+                    },
+                    {
+                      "key": "sort",
+                      "value": "nome,asc",
+                      "disabled": false
+                    },
+                    {
+                      "key": "termo",
+                      "value": "",
+                      "disabled": true
+                    },
+                    {
+                      "key": "temPerfilCandidato",
+                      "value": "true",
+                      "disabled": true
+                    },
+                    {
+                      "key": "temPerfilRecrutador",
+                      "value": "true",
+                      "disabled": true
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Buscar usuário por ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/usuarios/{{usuario_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "usuarios",
+                    "{{usuario_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Atualizar usuário por ID",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/usuarios/{{usuario_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "usuarios",
+                    "{{usuario_id}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Usuário Postman Atualizado\",\n  \"telefone\": \"83999990010\",\n  \"email\": \"postman.user@example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Remover usuário por ID",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/usuarios/{{usuario_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "usuarios",
+                    "{{usuario_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Adicionar perfil candidato por ID",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/usuarios/{{usuario_id}}/perfil-candidato",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "usuarios",
+                    "{{usuario_id}}",
+                    "perfil-candidato"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Remover perfil candidato por ID",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/usuarios/{{usuario_id}}/perfil-candidato",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "usuarios",
+                    "{{usuario_id}}",
+                    "perfil-candidato"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Adicionar perfil recrutador por ID",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/usuarios/{{usuario_id}}/perfil-recrutador",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "usuarios",
+                    "{{usuario_id}}",
+                    "perfil-recrutador"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nomeDaEmpresa\": \"Empresa do Recrutador Postman\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Remover perfil recrutador por ID",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/usuarios/{{usuario_id}}/perfil-recrutador",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "usuarios",
+                    "{{usuario_id}}",
+                    "perfil-recrutador"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Tipos de emprego",
+          "item": [
+            {
+              "name": "Criar tipo de emprego admin",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/tipos-emprego",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "tipos-emprego"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"titulo\": \"Tipo Postman\",\n  \"descricao\": \"Tipo de emprego criado pela coleção do Postman.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                      "  try {",
+                      "    const json = pm.response.json();",
+                      "    if (json && json.id) pm.environment.set('tipo_id', json.id);",
+                      "  } catch (e) {}",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Aprovar tipos em lote",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/tipos-emprego/aprovar-lote",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "tipos-emprego",
+                    "aprovar-lote"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "[{{tipo_pendente_id}}]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Listar tipos não aprovados",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/tipos-emprego/nao-aprovados?page=0&size=10&sort=id,desc&termo=",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "tipos-emprego",
+                    "nao-aprovados"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0",
+                      "disabled": false
+                    },
+                    {
+                      "key": "size",
+                      "value": "10",
+                      "disabled": false
+                    },
+                    {
+                      "key": "sort",
+                      "value": "id,desc",
+                      "disabled": false
+                    },
+                    {
+                      "key": "termo",
+                      "value": "",
+                      "disabled": true
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Buscar tipo admin por ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/tipos-emprego/{{tipo_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "tipos-emprego",
+                    "{{tipo_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Atualizar tipo admin por ID",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/tipos-emprego/{{tipo_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "tipos-emprego",
+                    "{{tipo_id}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"titulo\": \"Tipo Postman\",\n  \"descricao\": \"Tipo de emprego criado pela coleção do Postman.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Remover tipo admin por ID",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/tipos-emprego/{{tipo_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "tipos-emprego",
+                    "{{tipo_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Aprovar tipo por ID",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/tipos-emprego/{{tipo_id}}/aprovar",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "tipos-emprego",
+                    "{{tipo_id}}",
+                    "aprovar"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Experiências",
+          "item": [
+            {
+              "name": "Listar experiências admin",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/experiencias?page=0&size=10&sort=id,desc",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "experiencias"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0",
+                      "disabled": false
+                    },
+                    {
+                      "key": "size",
+                      "value": "10",
+                      "disabled": false
+                    },
+                    {
+                      "key": "sort",
+                      "value": "id,desc",
+                      "disabled": false
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Buscar experiência admin por ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/experiencias/{{experiencia_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "experiencias",
+                    "{{experiencia_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Atualizar experiência admin por ID",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/experiencias/{{experiencia_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "experiencias",
+                    "{{experiencia_id}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tipoDeEmpregoId\": \"{{tipo_id}}\",\n  \"descricao\": \"Experiência atualizada pela coleção do Postman.\",\n  \"dataInicio\": \"2023-02-01\",\n  \"dataFim\": null\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Remover experiência admin por ID",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/experiencias/{{experiencia_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "experiencias",
+                    "{{experiencia_id}}"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080"
+    }
+  ]
+}
