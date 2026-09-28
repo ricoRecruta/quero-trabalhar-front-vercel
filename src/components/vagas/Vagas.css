@@ -1,0 +1,225 @@
+/* Vagas.css — estilos específicos da tela de listagem de vagas
+   (topbar, nav e container são herdados do Layout.css) */
+
+.vagas-titulo {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 6px 0;
+}
+
+.vagas-subtitulo {
+  font-size: 0.95rem;
+  color: #4b5563;
+  margin: 0 0 24px 0;
+}
+
+.vagas-busca-linha {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.vagas-busca-input {
+  flex: 1;
+  height: 52px;
+  padding: 0 20px;
+  border-radius: 26px;
+  border: none;
+  background-color: #ffffff;
+  font-size: 0.95rem;
+  color: #111827;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.vagas-busca-input::placeholder {
+  color: #9ca3af;
+}
+
+.vagas-filtrar-botao {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 52px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 26px;
+  background-color: #ffffff;
+  color: #1f2937;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.vagas-filtrar-botao:hover {
+  background-color: #f3f4f6;
+}
+
+/* Grid de vagas */
+
+.vagas-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.vaga-card {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.vaga-cargo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 12px 0;
+}
+
+.vaga-info-linha {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.vaga-info-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.vaga-imagem-placeholder {
+  height: 44px;
+  border-radius: 10px;
+  background-color: #f3f4f6;
+  margin-bottom: 14px;
+}
+
+.vaga-rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.vaga-salario {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.95rem;
+  color: #111827;
+  font-weight: 500;
+}
+
+.vaga-candidatar-botao {
+  width: 100%;
+  height: 50px;
+  border: none;
+  border-radius: 12px;
+  background-color: #1e2a5e;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.vaga-candidatar-botao:hover {
+  opacity: 0.9;
+}
+
+.vaga-candidatar-botao:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.vaga-descricao {
+  margin: 0 0 16px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #4b5563;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.vaga-erro {
+  margin: 10px 0 0;
+  font-size: 0.85rem;
+  color: #b42318;
+}
+
+/* Mensagens de carregamento, lista vazia e falha de rede */
+.vagas-aviso {
+  margin: 24px 0;
+  padding: 16px 18px;
+  border-radius: 12px;
+  background-color: #f3f4f6;
+  color: #4b5563;
+  font-size: 0.95rem;
+}
+
+.vagas-aviso-erro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  background-color: #fef3f2;
+  color: #b42318;
+}
+
+.vagas-aviso-erro p {
+  margin: 0;
+}
+
+.vagas-aviso-erro button {
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  padding: 8px 16px;
+  background: transparent;
+  color: inherit;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.vagas-paginacao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 28px 0 8px;
+  font-size: 0.92rem;
+  color: #4b5563;
+}
+
+.vagas-paginacao button {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 8px 18px;
+  background-color: #ffffff;
+  color: #1e2a5e;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.vagas-paginacao button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+@media (max-width: 767px) {
+  .vagas-grid {
+    grid-template-columns: 1fr;
+  }
+}

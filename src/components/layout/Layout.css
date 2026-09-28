@@ -1,0 +1,104 @@
+/* Layout.css */
+
+.layout-page {
+  min-height: 100vh;
+  width: 100%;
+  background-color: #e5e5e5;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Barra superior (ciano) */
+
+.layout-topbar {
+  height: 72px;
+  background-color: #00b4c9;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+  padding: 0 32px;
+}
+
+.layout-topbar-usuario {
+  color: #ffffff;
+  font-size: 0.95rem;
+}
+
+.layout-sair-botao {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 20px;
+  background-color: #ffffff;
+  color: #1f2937;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.layout-sair-botao:hover {
+  background-color: #f3f4f6;
+}
+
+/* Navegação */
+
+.layout-nav {
+  height: 76px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 32px;
+}
+
+.layout-nav-item {
+  height: 44px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 22px;
+  background: transparent;
+  color: #374151;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.layout-nav-item-ativo {
+  background-color: #1e2a5e;
+  color: #ffffff;
+}
+
+/* Área de conteúdo */
+
+.layout-conteudo-fundo {
+  padding: 32px;
+}
+
+.layout-conteudo-card {
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: #ececec;
+  border-radius: 24px;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+/* Responsivo */
+
+@media (max-width: 767px) {
+  .layout-nav {
+    padding: 0 16px;
+    overflow-x: auto;
+  }
+
+  .layout-conteudo-fundo {
+    padding: 16px;
+  }
+
+  .layout-conteudo-card {
+    padding: 20px;
+  }
+}

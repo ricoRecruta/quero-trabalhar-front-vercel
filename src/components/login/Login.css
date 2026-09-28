@@ -1,0 +1,168 @@
+/* Login.css */
+
+.login-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 1024px;
+  display: flex;
+  align-items: center;
+  gap: 64px;
+}
+
+/* Painel esquerdo (foto) */
+
+.login-photo-panel {
+  position: relative;
+  width: 50%;
+  max-width: 420px;
+  aspect-ratio: 3 / 4;
+  border-radius: 28px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: #0a2a5e; /* fallback caso a imagem não carregue */
+}
+
+.login-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.login-logo {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  color: #ffffff;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.login-logo-icon {
+  width: 100%;
+  height: 100%;
+}
+
+/* Painel direito (formulário) */
+
+.login-form-panel {
+  width: 50%;
+  max-width: 384px;
+}
+
+.login-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #1e2a5e;
+  margin: 0 0 40px 0;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.login-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.login-input {
+  height: 48px;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  font-size: 1rem;
+  color: #111827;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.login-input:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 2px #2f4e8f;
+}
+
+.login-error {
+  font-size: 0.875rem;
+  color: #dc2626;
+  margin: 0;
+}
+
+.login-button {
+  height: 56px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  background: linear-gradient(to right, #1e3a6e, #3d5fa3);
+  box-shadow: 0 4px 10px rgba(30, 58, 110, 0.25);
+  transition: opacity 0.2s ease;
+}
+
+.login-button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.login-button:active:not(:disabled) {
+  opacity: 0.8;
+}
+
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login-cadastro-link {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 4px 0 0 0;
+}
+
+.login-link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #1e3a6e;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Responsivo: esconde a foto em telas pequenas */
+
+@media (max-width: 767px) {
+  .login-photo-panel {
+    display: none;
+  }
+
+  .login-form-panel {
+    width: 100%;
+    max-width: 384px;
+  }
+}

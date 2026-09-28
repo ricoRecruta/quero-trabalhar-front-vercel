@@ -1,0 +1,61 @@
+/* Estado.css — mensagens de carregando/erro/vazio e paginação,
+   reaproveitadas por qualquer tela que busca dados da API. */
+
+.aviso {
+  margin: 24px 0;
+  padding: 16px 18px;
+  border-radius: 12px;
+  background-color: #f3f4f6;
+  color: #4b5563;
+  font-size: 0.95rem;
+}
+
+.aviso-erro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  background-color: #fef3f2;
+  color: #b42318;
+}
+
+.aviso-erro p {
+  margin: 0;
+}
+
+.aviso-erro button {
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  padding: 8px 16px;
+  background: transparent;
+  color: inherit;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.paginacao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 28px 0 8px;
+  font-size: 0.92rem;
+  color: #4b5563;
+}
+
+.paginacao button {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 8px 18px;
+  background-color: #ffffff;
+  color: #1e2a5e;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.paginacao button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

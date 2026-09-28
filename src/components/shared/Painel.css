@@ -1,0 +1,245 @@
+/* Painel.css — seções, badges e cards de item, reaproveitados pelas telas
+   de Empresas, Recrutador, Indicações, Perfil e Admin. */
+
+.secao {
+  margin-bottom: 40px;
+}
+
+.secao:last-child {
+  margin-bottom: 0;
+}
+
+.secao-cabecalho {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.secao-titulo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 4px 0;
+}
+
+.secao-subtitulo {
+  font-size: 0.88rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.secao-acoes {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Badges */
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-neutro {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+.badge-sucesso {
+  background-color: #ecfdf3;
+  color: #027a48;
+}
+
+.badge-alerta {
+  background-color: #fffaeb;
+  color: #b54708;
+}
+
+.badge-erro {
+  background-color: #fef3f2;
+  color: #b42318;
+}
+
+.badge-info {
+  background-color: #eff8ff;
+  color: #175cd3;
+}
+
+/* Cards de item de lista */
+
+.lista-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.item-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  background-color: #ffffff;
+  border-radius: 14px;
+  padding: 16px 20px;
+}
+
+.item-card-info {
+  flex: 1;
+  min-width: 200px;
+}
+
+.item-card-titulo-linha {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.item-card-titulo {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.item-card-meta {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin: 6px 0 0 0;
+}
+
+.item-card-acoes {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Botões compactos usados dentro de cards de item */
+
+.botao-pequeno {
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 18px;
+  border: 1px solid #d1d5db;
+  background-color: #ffffff;
+  color: #1f2937;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.botao-pequeno:hover:not(:disabled) {
+  background-color: #f3f4f6;
+}
+
+.botao-pequeno:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.botao-pequeno-primario {
+  border-color: #1e2a5e;
+  background-color: #1e2a5e;
+  color: #ffffff;
+}
+
+.botao-pequeno-primario:hover:not(:disabled) {
+  opacity: 0.9;
+  background-color: #1e2a5e;
+}
+
+.botao-pequeno-perigo {
+  border-color: #fda29b;
+  color: #b42318;
+}
+
+.botao-pequeno-perigo:hover:not(:disabled) {
+  background-color: #fef3f2;
+}
+
+/* Formulário inline compacto (ex.: buscar por ID, adicionar item rápido) */
+
+.form-inline {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.form-inline input,
+.form-inline select {
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 22px;
+  border: 1px solid #d1d5db;
+  background-color: #ffffff;
+  font-size: 0.9rem;
+  color: #111827;
+  outline: none;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.form-inline input:focus,
+.form-inline select:focus {
+  box-shadow: 0 0 0 2px #2f4e8f;
+  border-color: transparent;
+}
+
+/* Abas internas simples (ex.: painel de Admin) */
+
+.abas-internas {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+  border-bottom: 1px solid #d1d5db;
+  padding-bottom: 12px;
+}
+
+.aba-interna-item {
+  height: 38px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 19px;
+  background: transparent;
+  color: #4b5563;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.aba-interna-item:hover {
+  background-color: #f3f4f6;
+}
+
+.aba-interna-item-ativa {
+  background-color: #1e2a5e;
+  color: #ffffff;
+}
+
+.aba-interna-item-ativa:hover {
+  background-color: #1e2a5e;
+}
+
+@media (max-width: 767px) {
+  .item-card {
+    flex-direction: column;
+  }
+
+  .item-card-acoes {
+    width: 100%;
+  }
+}
