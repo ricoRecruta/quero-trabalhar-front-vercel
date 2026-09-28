@@ -1,0 +1,53 @@
+# Front + backend em containers SEPARADOS, comunicando pela rede Docker
+# `quero-trabalhar-net` — ao contrário de docker-allinone/, que embute os
+# dois no mesmo container.
+#
+# O backend é clonado da branch jefferson-experimental durante o build
+# (ver docker-backend-jefferson/Dockerfile) porque é o único que bate com
+# o contrato que este front (src/api/) implementa. `docker-compose.full.yml`,
+# por comparação, builda o backend a partir do checkout local em
+# ../quero-trabalhar — útil só se aquele checkout já estiver na branch
+# certa.
+#
+# Uso:
+#   docker network create quero-trabalhar-net   # uma vez só, se ainda não existir
+#   docker compose -f docker-compose.separated.yml up -d --build
+#
+# Front:    http://localhost:5173
+# Backend:  http://localhost:8080 (Swagger em /swagger-ui.html)
+#
+# Contas de teste (perfil "local", H2 em memória, senha 123456 para todas):
+# admin@gmail.com, dan@gmail.com, rh@tech.com, jane@gmail.com
+
+services:
+  quero-trabalhar-api:
+    build:
+      context: docker-backend-jefferson
+      dockerfile: Dockerfile
+    image: quero-trabalhar-api-jefferson:local
+    container_name: quero-trabalhar-api
+    ports:
+      - "8080:8080"
+    networks:
+      - quero-trabalhar-net
+    restart: unless-stopped
+
+  quero-trabalhar-front:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: quero-trabalhar-front:local
+    container_name: quero-trabalhar-front
+    ports:
+      - "5173:80"
+    environment:
+      API_URL: http://quero-trabalhar-api:8080
+    depends_on:
+      - quero-trabalhar-api
+    networks:
+      - quero-trabalhar-net
+    restart: unless-stopped
+
+networks:
+  quero-trabalhar-net:
+    external: true

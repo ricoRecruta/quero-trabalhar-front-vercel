@@ -1,0 +1,30 @@
+# Sobe apenas o frontend.
+#
+# Depende da rede compartilhada, criada uma única vez:
+#   docker network create quero-trabalhar-net
+#
+# O backend (repositório quero-trabalhar) sobe com o compose dele e entra na
+# mesma rede, então os dois containers se enxergam pelo nome do serviço.
+#
+# Para subir os dois de uma vez a partir daqui, use:
+#   docker compose -f docker-compose.full.yml up --build
+
+services:
+  quero-trabalhar-front:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: quero-trabalhar-front:local
+    container_name: quero-trabalhar-front
+    ports:
+      - "5173:80"
+    environment:
+      # Nome do serviço do backend dentro da rede quero-trabalhar-net.
+      API_URL: ${API_URL:-http://quero-trabalhar-api:8080}
+    networks:
+      - quero-trabalhar-net
+    restart: unless-stopped
+
+networks:
+  quero-trabalhar-net:
+    external: true

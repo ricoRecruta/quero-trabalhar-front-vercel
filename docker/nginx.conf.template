@@ -1,0 +1,88 @@
+# Servidor do frontend em produção/container.
+#
+# ${API_URL} é substituído na inicialização do container (envsubst), então dá
+# para trocar o endereço do backend sem rebuildar a imagem.
+# A substituição é restrita a variáveis com prefixo API_ (NGINX_ENVSUBST_FILTER),
+# para não quebrar as variáveis próprias do nginx como $uri e $host.
+
+# 127.0.0.11 é o DNS interno do Docker. É essencial usar `resolver` + uma
+# variável no proxy_pass (em vez de proxy_pass ${API_URL} direto): com um
+# hostname literal, o nginx resolve o DNS ao CARREGAR a config e, se o
+# backend ainda não estiver de pé (ordem de start do compose, container
+# reiniciando, ou o front rodando sozinho), o processo nem sobe —
+# "host not found in upstream". Com resolver + variável, a resolução vira
+# uma decisão por requisição: o nginx sobe sempre, e enquanto o backend
+# não responde, as chamadas a /api simplesmente devolvem 502.
+resolver 127.0.0.11 valid=10s ipv6=off;
+resolver_timeout 5s;
+
+server {
+    listen      80;
+    server_name _;
+
+    root  /usr/share/nginx/html;
+    index index.html;
+
+    set $api_upstream ${API_URL};
+
+    # Cabeçalhos repassados ao backend — herdados por todos os location abaixo.
+    proxy_set_header Host              $host;
+    proxy_set_header X-Real-IP         $remote_addr;
+    proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_http_version 1.1;
+    proxy_connect_timeout 5s;
+
+    gzip            on;
+    gzip_vary       on;
+    gzip_min_length 1024;
+    gzip_types      text/plain text/css application/javascript application/json
+                    image/svg+xml application/xml;
+
+    # ------------------------------------------------------------------
+    # API: proxy reverso para o backend.
+    # Front e API ficam na mesma origem, então não há CORS e o cabeçalho
+    # Authorization da resposta de login chega ao navegador sem precisar
+    # de Access-Control-Expose-Headers.
+    # ------------------------------------------------------------------
+    location /login {
+        proxy_pass $api_upstream;
+    }
+
+    location /api/ {
+        proxy_pass $api_upstream;
+    }
+
+    location /v3/api-docs {
+        proxy_pass $api_upstream;
+    }
+
+    location /swagger-ui {
+        proxy_pass $api_upstream;
+    }
+
+    # Login da API antiga (branch main), inofensivo se não existir.
+    location /auth/ {
+        proxy_pass $api_upstream;
+    }
+
+    # ------------------------------------------------------------------
+    # Arquivos estáticos do build
+    # ------------------------------------------------------------------
+    location /assets/ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+        try_files $uri =404;
+    }
+
+    location = /healthz {
+        access_log off;
+        add_header Content-Type text/plain;
+        return 200 "ok\n";
+    }
+
+    # SPA: qualquer rota desconhecida devolve o index.html
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
