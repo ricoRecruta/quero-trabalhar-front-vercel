@@ -64,13 +64,13 @@ O Vite encaminha `/login` e `/api/*` para `http://localhost:8080`.
 
 ## Publicação na Vercel
 
-O `Dockerfile.vercel` publica tudo em um único container e domínio:
+O `vercel.json` usa Vercel Services para publicar os dois aplicativos no mesmo domínio:
 
-- o Vite é compilado durante o build;
-- os arquivos gerados são incorporados ao Spring Boot;
-- `/` e `/assets/*` entregam o frontend;
-- `/login` e `/api/*` continuam sendo atendidos pela API;
-- o container escuta a porta fornecida pela Vercel.
+- o serviço `web` compila o Vite em `apps/web` e atende `/`;
+- o serviço `api` executa o container Spring Boot de `apps/api`;
+- `/api/*` e `/login` são encaminhados publicamente para `api`;
+- todos os outros caminhos são encaminhados para `web`;
+- não há bindings internos, pois o navegador chama a API pelas rotas públicas relativas.
 
 ### 1. Banco de dados
 
@@ -99,9 +99,9 @@ Não use H2 em produção: os serviços podem escalar para zero ou criar mais de
 ### 2. Configurar o projeto
 
 1. Importe este repositório na Vercel.
-2. Mantenha a raiz do projeto apontando para a raiz do repositório.
+2. Selecione o modo **Services** quando a Vercel solicitar a importação multi-serviço.
 3. Cadastre as variáveis de produção e preview.
-4. Faça o deploy; a Vercel detectará o `Dockerfile.vercel` automaticamente.
+4. Faça o deploy a partir da raiz; cada serviço será construído independentemente.
 
 O frontend usa caminhos relativos para a API, por isso previews e domínios personalizados funcionam sem trocar `VITE_API_BASE_URL` e sem CORS.
 
