@@ -1,0 +1,12 @@
+target
+.git
+.github
+.idea
+*.iml
+
+.env
+README.md
+HELP.md
+LICENSE
+
+.mvn/wrapper/maven-wrapper.jar

@@ -1,178 +1,120 @@
-# Quero Trabalhar — Frontend
+# Quero Trabalhar
 
-Interface web em React + Vite do Quero Trabalhar, sistema que conecta pessoas
-em busca de emprego a recrutadores.
+Monorepo da plataforma Quero Trabalhar. O frontend React/Vite e a API Java/Spring Boot são versionados, desenvolvidos e publicados juntos.
 
-Este repositório contém **apenas o frontend**. A API fica em
-[a4s-ufpb/quero-trabalhar](https://github.com/a4s-ufpb/quero-trabalhar).
+## Estrutura
 
-## Sumário
-
-- [Como rodar](#como-rodar)
-- [Rodando com Docker](#rodando-com-docker)
-- [Como o front conversa com a API](#como-o-front-conversa-com-a-api)
-- [Camada de API](#camada-de-api)
-- [Estrutura](#estrutura)
-- [Documentação](#documentação)
-
-## Como rodar
-
-Pré-requisitos: Node 20+ e a API rodando em `http://localhost:8080`.
-
-```bash
-npm install
-cp .env.example .env
-npm run dev
+```text
+apps/
+├── web/  # React 19 + Vite
+└── api/  # Java 21 + Spring Boot
+docs/     # documentação e coleção Postman
 ```
 
-A aplicação sobe em <http://localhost:5173>.
+O backend em `apps/api` vem da implementação completa da branch `jefferson-experimental` do repositório `a4s-ufpb/quero-trabalhar`, que corresponde ao contrato consumido pelo frontend.
 
-Scripts disponíveis:
+## Desenvolvimento local
 
-| Comando | O que faz |
-| --- | --- |
-| `npm run dev` | Servidor de desenvolvimento com hot reload |
-| `npm run build` | Gera o bundle de produção em `dist/` |
-| `npm run preview` | Serve o bundle já buildado |
-| `npm run lint` | Roda o ESLint |
+### Com Docker
 
-## Rodando com Docker
-
-Cada aplicação tem seu próprio container. Eles se enxergam por uma rede Docker
-compartilhada, criada uma única vez:
-
-```bash
-docker network create quero-trabalhar-net
-```
-
-Depois, em cada repositório:
+O caminho mais simples sobe as duas aplicações e mantém frontend e API na mesma origem:
 
 ```bash
 docker compose up --build
 ```
 
-O frontend fica em <http://localhost:5173> e a API em <http://localhost:8080>.
+- Aplicação: <http://localhost:5173>
+- API direta: <http://localhost:8080>
+- Swagger local: <http://localhost:8080/swagger-ui/index.html>
 
-### Subindo os dois de uma vez
+O perfil local usa H2 em memória e cria dados de demonstração. As contas de demonstração usam a senha `123456`:
 
-Se os repositórios estiverem lado a lado no disco, dá para subir tudo a partir
-daqui, sem criar a rede manualmente:
+- `admin@gmail.com`
+- `dan@gmail.com`
+- `rh@tech.com`
+- `jane@gmail.com`
+
+### Sem Docker
+
+Pré-requisitos: Node.js 20+, Java 21 e Maven 3.9+.
 
 ```bash
-docker compose -f docker-compose.full.yml up --build
+npm install
+npm run dev:api
 ```
 
-Se o backend estiver em outro caminho, aponte no `.env`:
+Em outro terminal:
 
-```
-BACKEND_PATH=../caminho/para/quero-trabalhar
-```
-
-## Como o front conversa com a API
-
-O frontend **não chama o backend diretamente pelo navegador**. Em ambos os
-ambientes existe um proxy que coloca os dois na mesma origem:
-
-```
- Desenvolvimento                          Container
- ───────────────                          ─────────
- navegador                                navegador
-    │ /api/oportunidades                     │ /api/oportunidades
-    ▼                                        ▼
- vite dev server  :5173                   nginx  :80  (publicado em :5173)
-    │ proxy                                  │ proxy_pass
-    ▼                                        ▼
- API Spring Boot  :8080                   quero-trabalhar-api:8080
+```bash
+npm run dev:web
 ```
 
-Isso resolve dois problemas de uma vez:
+O Vite encaminha `/login` e `/api/*` para `http://localhost:8080`.
 
-1. **Sem CORS.** Como as requisições saem da mesma origem do front, o navegador
-   não dispara preflight nem exige `Access-Control-Allow-Origin`.
-2. **O token chega inteiro.** A API devolve o JWT no cabeçalho `Authorization`
-   da resposta do login. Numa chamada cross-origin, esse cabeçalho só ficaria
-   visível se a API mandasse `Access-Control-Expose-Headers`. No mesmo domínio,
-   ele chega sem configuração extra.
+## Comandos
 
-Quem define o destino do proxy:
-
-| Ambiente | Arquivo | Variável |
-| --- | --- | --- |
-| Desenvolvimento | [`vite.config.js`](vite.config.js) | `VITE_API_PROXY_TARGET` |
-| Container | [`docker/nginx.conf.template`](docker/nginx.conf.template) | `API_URL` |
-
-Para chamar a API diretamente, sem proxy, defina `VITE_API_BASE_URL=http://localhost:8080`
-— nesse caso a API precisa liberar a origem em `CORS_ALLOWED_ORIGINS`.
-
-## Camada de API
-
-Todo acesso à API passa por [`src/api/`](src/api/). Os módulos espelham os
-grupos da coleção Postman; nenhum componente monta URL na mão.
-
-```jsx
-import { auth, oportunidades, candidatos } from "../api";
-
-await auth.login({ email, password });               // guarda o token
-const { itens, totalPaginas } = await oportunidades.listar({ termo: "java" });
-await candidatos.demonstrarInteresse(vagaId);
-```
-
-O que [`client.js`](src/api/client.js) cuida sozinho:
-
-- injeta `Authorization: Bearer <token>` nas chamadas autenticadas;
-- guarda e lê o token do `localStorage`;
-- converte erro HTTP em `ApiError` com `status`, `corpo` e a mensagem do backend;
-- descarta parâmetros de query vazios;
-- normaliza a paginação do Spring (`Page<T>`) para `{ itens, pagina, totalPaginas, ... }`.
-
-Tratando erros:
-
-```jsx
-import { ApiError } from "../api";
-
-try {
-  await candidatos.demonstrarInteresse(vagaId);
-} catch (err) {
-  if (err instanceof ApiError && err.naoAutorizado) {
-    // 401 ou 403 — mandar para o login
-  }
-}
-```
-
-A lista completa de endpoints está em [`docs/api/ENDPOINTS.md`](docs/api/ENDPOINTS.md).
-
-## Estrutura
-
-```
-src/
-├── api/                  camada de acesso à API
-│   ├── client.js         fetch, token, erros, paginação
-│   ├── mapeadores.js     contrato da API -> formato da interface
-│   ├── index.js          ponto único de importação
-│   └── *.js              um módulo por grupo de endpoints
-├── components/
-│   ├── cadastro/         criação de conta
-│   ├── criarVaga/        publicação de vaga (recrutador)
-│   ├── layout/           casca da aplicação
-│   ├── login/            autenticação
-│   ├── perfil/           dados do usuário
-│   └── vagas/            listagem e candidatura
-└── main.jsx
-```
-
-## Documentação
-
-| Arquivo | Conteúdo |
+| Comando | Função |
 | --- | --- |
-| [`docs/api/ENDPOINTS.md`](docs/api/ENDPOINTS.md) | Todos os endpoints, gerado da coleção |
-| [`docs/api/QueroTrabalhar_API.postman_collection.json`](docs/api/) | Coleção Postman |
-| [`docs/api/QueroTrabalhar_Local.postman_environment.json`](docs/api/) | Ambiente local do Postman |
-| [`docs/GUIA-Documentacao-final-QueroTrabalharAPI.pdf`](docs/) | Guia da documentação |
-| [`docs/Documentacao-final-QueroTrabalharAPI.pdf`](docs/) | Documentação final da API |
-| `docs/Visão geral da API Quero Trabalhar Backend.docx` | Visão geral do backend |
+| `npm run dev` | Inicia o frontend |
+| `npm run dev:api` | Inicia a API com Maven |
+| `npm run build` | Gera o frontend de produção |
+| `npm run build:api` | Empacota a API |
+| `npm run lint` | Verifica o frontend |
+| `npm run test:api` | Executa os testes da API |
 
-Com a API no ar, o Swagger fica em <http://localhost:8080/swagger-ui.html>.
+## Publicação na Vercel
+
+O arquivo `vercel.json` usa Vercel Services para publicar tudo em um único projeto e domínio:
+
+- `/` é atendido pelo serviço Vite em `apps/web`;
+- `/login` e `/api/*` são enviados ao serviço Spring Boot em `apps/api`;
+- a API é construída pelo `apps/api/Dockerfile.vercel` e escuta a porta fornecida pela Vercel.
+
+### 1. Banco de dados
+
+Containers da Vercel não têm disco persistente. Conecte um banco MySQL ou PostgreSQL gerenciado e cadastre estas variáveis no projeto:
+
+| Variável | Obrigatória | Descrição |
+| --- | --- | --- |
+| `DB_URL` | sim | URL JDBC, começando com `jdbc:mysql://` ou `jdbc:postgresql://` |
+| `DB_USERNAME` | sim | usuário do banco |
+| `DB_PASSWORD` | sim | senha do banco |
+| `JWT_SECRET` | sim | segredo Base64 forte para assinar tokens |
+| `JWT_EXPIRATION` | não | validade do token em ms; padrão `86400000` |
+| `GOOGLE_MAPS_API_KEY` | não | chave usada para resolver localidades |
+| `JPA_DDL_AUTO` | não | padrão `update`; após criar o esquema, prefira `validate` |
+| `LOCALIDADE_PENDENTE_REPROCESSAMENTO_ENABLED` | não | mantenha `false` em ambiente com autoscaling |
+
+Exemplos de `DB_URL`:
+
+```properties
+DB_URL=jdbc:postgresql://host:5432/quero_trabalhar?sslmode=require
+DB_URL=jdbc:mysql://host:3306/quero_trabalhar?useSSL=true
+```
+
+Não use H2 em produção: os serviços podem escalar para zero ou criar mais de uma instância.
+
+### 2. Configurar o projeto
+
+1. Importe este repositório na Vercel.
+2. Em **Build and Deployment**, selecione o framework **Services**.
+3. Cadastre as variáveis de produção e preview.
+4. Faça o deploy a partir da raiz do repositório.
+
+Também é possível testar a composição local da Vercel com uma versão recente da CLI:
+
+```bash
+vercel dev -L
+```
+
+O frontend usa caminhos relativos para a API, por isso previews e domínios personalizados funcionam sem trocar `VITE_API_BASE_URL` e sem CORS entre os dois serviços.
+
+## Observações de produção
+
+- O scheduler de reprocessamento de localidades fica desligado por padrão na Vercel, evitando execução duplicada quando houver várias instâncias.
+- Swagger e H2 Console ficam desabilitados no perfil `prod`.
+- `JPA_DDL_AUTO=update` facilita o primeiro deploy do MVP; migrações versionadas devem substituir essa opção antes de evoluções destrutivas do banco.
 
 ## Licença
 
-[MIT](LICENSE).
+MIT.

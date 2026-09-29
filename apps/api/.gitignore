@@ -1,0 +1,30 @@
+# Compilação e Build
+/target/
+/bin/
+*.jar
+*.war
+*.zip
+*.tar.gz
+
+# IDEs (Essencial ignorar para não poluir o repositório)
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.vscode/
+.factorypath
+
+# Logs e Arquivos Temporários
+*.log
+.DS_Store
+Thumbs.db
+temp/
+
+# Maven Wrapper
+.mvn/
+mvnw
+mvnw.cmd
+
+#.env
+.env

@@ -1,0 +1,17 @@
+services:
+  quero-trabalhar-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: quero-trabalhar-api
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      JWT_SECRET: ${JWT_SECRET:-cXVlcm8tdHJhYmFsaGFyLWxvY2FsLWFuZC10ZXN0LWp3dC1zZWNyZXQtd2l0aC1hdC1sZWFzdC1zaXh0eS1mb3VyLWJ5dGVzLTIwMjY=}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-86400000}
+      GOOGLE_MAPS_API_KEY: ${GOOGLE_MAPS_API_KEY:-dev-google-maps-key}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173}
+      LOCALIDADE_PENDENTE_REPROCESSAMENTO_ENABLED: ${LOCALIDADE_PENDENTE_REPROCESSAMENTO_ENABLED:-true}
+      LOCALIDADE_PENDENTE_REPROCESSAMENTO_FIXED_DELAY_MS: ${LOCALIDADE_PENDENTE_REPROCESSAMENTO_FIXED_DELAY_MS:-600000}
+    restart: unless-stopped

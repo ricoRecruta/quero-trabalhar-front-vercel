@@ -1,0 +1,41 @@
+spring:
+  config:
+    import: "optional:file:.env[.properties]"
+  application:
+    name: QueroTrabalhar
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+  jpa:
+    open-in-view: true
+
+jwt:
+  secret: ${JWT_SECRET:cXVlcm8tdHJhYmFsaGFyLWxvY2FsLWFuZC10ZXN0LWp3dC1zZWNyZXQtd2l0aC1hdC1sZWFzdC1zaXh0eS1mb3VyLWJ5dGVzLTIwMjY=}
+  expiration: ${JWT_EXPIRATION:86400000}
+
+google:
+  maps:
+    connect-timeout-ms: ${GOOGLE_MAPS_CONNECT_TIMEOUT_MS:2000}
+    read-timeout-ms: ${GOOGLE_MAPS_READ_TIMEOUT_MS:3000}
+    retry:
+      max-attempts: ${GOOGLE_MAPS_RETRY_MAX_ATTEMPTS:2}
+      delay-ms: ${GOOGLE_MAPS_RETRY_DELAY_MS:200}
+    api:
+      url: ${GOOGLE_MAPS_API_URL:https://maps.googleapis.com}
+      path: ${GOOGLE_MAPS_API_PATH:/maps/api/geocode/json}
+      key: ${GOOGLE_MAPS_API_KEY:dev-google-maps-key}
+
+app:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
+
+localidade:
+  pendente:
+    reprocessamento:
+      enabled: ${LOCALIDADE_PENDENTE_REPROCESSAMENTO_ENABLED:true}
+      fixed-delay-ms: ${LOCALIDADE_PENDENTE_REPROCESSAMENTO_FIXED_DELAY_MS:600000}
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true

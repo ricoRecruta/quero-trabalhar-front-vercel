@@ -1,30 +1,26 @@
-# Sobe apenas o frontend.
-#
-# Depende da rede compartilhada, criada uma única vez:
-#   docker network create quero-trabalhar-net
-#
-# O backend (repositório quero-trabalhar) sobe com o compose dele e entra na
-# mesma rede, então os dois containers se enxergam pelo nome do serviço.
-#
-# Para subir os dois de uma vez a partir daqui, use:
-#   docker compose -f docker-compose.full.yml up --build
-
 services:
-  quero-trabalhar-front:
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      JWT_SECRET: ${JWT_SECRET:-cXVlcm8tdHJhYmFsaGFyLWxvY2FsLWFuZC10ZXN0LWp3dC1zZWNyZXQtd2l0aC1sZWFzdC1zaXh0eS1mb3VyLWJ5dGVzLTIwMjY=}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-86400000}
+      GOOGLE_MAPS_API_KEY: ${GOOGLE_MAPS_API_KEY:-dev-google-maps-key}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173}
+    restart: unless-stopped
+
+  web:
     build:
       context: .
-      dockerfile: Dockerfile
-    image: quero-trabalhar-front:local
-    container_name: quero-trabalhar-front
+      dockerfile: apps/web/Dockerfile
     ports:
       - "5173:80"
     environment:
-      # Nome do serviço do backend dentro da rede quero-trabalhar-net.
-      API_URL: ${API_URL:-http://quero-trabalhar-api:8080}
-    networks:
-      - quero-trabalhar-net
+      API_URL: http://api:8080
+    depends_on:
+      - api
     restart: unless-stopped
-
-networks:
-  quero-trabalhar-net:
-    external: true

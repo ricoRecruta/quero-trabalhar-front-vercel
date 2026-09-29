@@ -1,0 +1,42 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:querotrabalhar-test;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: true
+    show-sql: false
+  h2:
+    console:
+      enabled: false
+
+jwt:
+  secret: cXVlcm8tdHJhYmFsaGFyLWxvY2FsLWFuZC10ZXN0LWp3dC1zZWNyZXQtd2l0aC1hdC1sZWFzdC1zaXh0eS1mb3VyLWJ5dGVzLTIwMjY=
+  expiration: 86400000
+
+google:
+  maps:
+    api:
+      url: https://maps.googleapis.com
+      path: /maps/api/geocode/json
+      key: test-google-maps-key
+
+app:
+  cors:
+    allowed-origins: http://localhost:5173
+
+localidade:
+  pendente:
+    reprocessamento:
+      enabled: false
+      fixed-delay-ms: 600000
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
