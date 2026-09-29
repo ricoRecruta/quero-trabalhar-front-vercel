@@ -103,7 +103,12 @@ function BuscaEmpresa({ onSolicitado }) {
  * oportunidades. Nada aqui é mock — todas as chamadas usam src/api/recrutadores.js
  * e src/api/oportunidades.js.
  */
-export default function Recrutador({ onEditarVaga, onNovaVaga, onIrParaPerfil }) {
+export default function Recrutador({
+  administrador = false,
+  onEditarVaga,
+  onNovaVaga,
+  onIrParaPerfil,
+}) {
   const [perfil, setPerfil] = useState(null);
   const [vinculo, setVinculo] = useState(null);
   const [semPerfilRecrutador, setSemPerfilRecrutador] = useState(false);
@@ -245,9 +250,11 @@ export default function Recrutador({ onEditarVaga, onNovaVaga, onIrParaPerfil })
       <Secao
         titulo="Minhas vagas"
         acoes={
-          <button type="button" className="botao-pequeno botao-pequeno-primario" onClick={onNovaVaga}>
-            + Nova vaga
-          </button>
+          administrador ? (
+            <button type="button" className="botao-pequeno botao-pequeno-primario" onClick={onNovaVaga}>
+              + Nova vaga
+            </button>
+          ) : null
         }
       >
         {erroVagas && <AvisoErro mensagem={erroVagas} onTentarNovamente={recarregar} />}

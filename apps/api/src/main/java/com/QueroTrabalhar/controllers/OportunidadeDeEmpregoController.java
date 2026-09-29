@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -91,9 +92,10 @@ public class OportunidadeDeEmpregoController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(
             summary = "Criar oportunidade de emprego",
-            description = "Cria uma oportunidade para o recrutador autenticado. A localidade pode ser informada por IDs estruturados ou por texto livre. Se a localidade ficar pendente, a resposta interna retorna os campos de status para o dono do recurso, mas a oportunidade não aparece nos endpoints públicos até possuir localidade validada. Quando publicarComoEmpresa=true, a publicação ocorre em nome da empresa vinculada ao recrutador somente se o vínculo estiver aprovado. A confirmação manual da sugestão de localidade ainda não está implementada no MVP."
+            description = "Cria uma oportunidade para um administrador autenticado que possua perfil de recrutador. A localidade pode ser informada por IDs estruturados ou por texto livre. Se a localidade ficar pendente, a resposta interna retorna os campos de status para o dono do recurso, mas a oportunidade não aparece nos endpoints públicos até possuir localidade validada. Quando publicarComoEmpresa=true, a publicação ocorre em nome da empresa vinculada ao recrutador somente se o vínculo estiver aprovado. A confirmação manual da sugestão de localidade ainda não está implementada no MVP."
     )
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Oportunidade cadastrada com sucesso.", useReturnTypeSchema = true),
@@ -105,6 +107,11 @@ public class OportunidadeDeEmpregoController {
             @ApiResponse(
                     responseCode = "401",
                     description = "Não autenticado.",
+                    content = @Content(schema = @Schema(implementation = StandardError.class))
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Usuário autenticado sem papel de administrador.",
                     content = @Content(schema = @Schema(implementation = StandardError.class))
             ),
             @ApiResponse(

@@ -44,6 +44,7 @@ public class SecurityConfig {
     private static final String LOGIN_PATH = "/api/login";
     private static final String LEGACY_LOGIN_PATH = "/login";
     private static final String ADMIN_MATCHER = "/api/admin/**";
+    private static final String OPORTUNIDADES_PATH = "/api/oportunidades";
 
     private static final String[] PUBLIC_POST_MATCHES = {
             "/api/usuarios/cadastrar"
@@ -157,6 +158,7 @@ public class SecurityConfig {
 
                     auth.requestMatchers(HttpMethod.POST, LOGIN_PATH, LEGACY_LOGIN_PATH).permitAll()
                             .requestMatchers(HttpMethod.POST, PUBLIC_POST_MATCHES).permitAll()
+                            .requestMatchers(HttpMethod.POST, OPORTUNIDADES_PATH).hasRole("ADMIN")
                             .requestMatchers(HttpMethod.GET, PUBLIC_GET_MATCHES).permitAll()
                             .requestMatchers(
                                     new RegexRequestMatcher("^/api/empresas/\\d+$", HttpMethod.GET.name()),

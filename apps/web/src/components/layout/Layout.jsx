@@ -18,6 +18,8 @@ const ABAS = [
   { id: "admin", label: "Admin" },
 ];
 
+const ABAS_EXCLUSIVAS_ADMIN = new Set(["criarVaga", "admin"]);
+
 export default function Layout({
   abaAtiva,
   onMudarAba,
@@ -26,7 +28,9 @@ export default function Layout({
   onSair,
   children,
 }) {
-  const abasVisiveis = administrador ? ABAS : ABAS.filter((aba) => aba.id !== "admin");
+  const abasVisiveis = administrador
+    ? ABAS
+    : ABAS.filter((aba) => !ABAS_EXCLUSIVAS_ADMIN.has(aba.id));
 
   return (
     <div className="layout-page">

@@ -114,6 +114,8 @@ O perfil de produção usa inicialização preguiçosa do Spring. O container ta
 
 - O scheduler de reprocessamento de localidades fica desligado por padrão na Vercel, evitando execução duplicada quando houver várias instâncias.
 - Swagger e H2 Console ficam desabilitados no perfil `prod`.
+- Defina `ADMIN_EMAILS` na Vercel com um ou mais e-mails separados por vírgula. Uma conta cadastrada com um desses e-mails recebe o papel `ADMIN` no próximo login.
+- A criação de vagas (`POST /api/oportunidades`) e a tela **Criar Vaga** são exclusivas para administradores. A listagem de vagas continua pública.
 - `JPA_DDL_AUTO=update` facilita o primeiro deploy do MVP; migrações versionadas devem substituir essa opção antes de evoluções destrutivas do banco.
 
 ## Licença

@@ -53,13 +53,14 @@ export default function App() {
 
   /** Navegação por clique no menu: sempre sai do modo de edição de vaga. */
   function handleMudarAba(novaAba) {
-    if (novaAba === "admin" && !administrador) return;
+    if (["admin", "criarVaga"].includes(novaAba) && !administrador) return;
     setVagaEditando(null);
     setAbaAtiva(novaAba);
   }
 
   /** Abre a tela de Criar Vaga — vazia (nova) ou pré-preenchida (edição). */
   function abrirCriarVaga(vaga) {
+    if (!administrador) return;
     setVagaEditando(vaga ?? null);
     setAbaAtiva("criarVaga");
   }
@@ -72,17 +73,20 @@ export default function App() {
   function renderConteudo() {
     switch (abaAtiva) {
       case "criarVaga":
-        return (
+        return administrador ? (
           <CriarVaga
             key={vagaEditando?.id ?? "novo"}
             vagaEditando={vagaEditando}
             onConcluir={handleConcluirVaga}
             onCancelar={handleConcluirVaga}
           />
+        ) : (
+          <Vagas />
         );
       case "recrutador":
         return (
           <Recrutador
+            administrador={administrador}
             onNovaVaga={() => abrirCriarVaga(null)}
             onEditarVaga={(vaga) => abrirCriarVaga(vaga)}
             onIrParaPerfil={() => handleMudarAba("perfil")}

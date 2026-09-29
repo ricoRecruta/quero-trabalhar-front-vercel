@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(properties = "app.security.admin-emails=allowlisted.security@teste.com")
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 class SecurityConfigIntegrationTest {
@@ -164,6 +164,36 @@ class SecurityConfigIntegrationTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.totalElements").value(2))
                 .andExpect(jsonPath("$.content[*].email", hasItems(USER_EMAIL, ADMIN_EMAIL)));
+    }
+
+    @Test
+    void devePromoverEmailConfiguradoParaAdminNoLogin() throws Exception {
+        String emailPermitido = "allowlisted.security@teste.com";
+        usuarioRepository.saveAndFlush(new Usuario(
+                "52998224725",
+                "Admin Configurado",
+                "83999990003",
+                emailPermitido,
+                passwordEncoder.encode(PASSWORD)
+        ));
+
+        String token = autenticar(emailPermitido, PASSWORD);
+
+        mockMvc.perform(get("/api/admin/usuarios")
+                        .header(HttpHeaders.AUTHORIZATION, token))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void deveNegarCriacaoDeVagaParaUsuarioComum() throws Exception {
+        String token = autenticar(USER_EMAIL, PASSWORD);
+
+        mockMvc.perform(post("/api/oportunidades")
+                        .header(HttpHeaders.AUTHORIZATION, token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.path").value("/api/oportunidades"));
     }
 
     @Test
