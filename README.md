@@ -108,6 +108,8 @@ Não use H2 em produção: os serviços podem escalar para zero ou criar mais de
 
 O frontend usa caminhos relativos para a API, por isso previews e domínios personalizados funcionam sem trocar `VITE_API_BASE_URL` e sem CORS.
 
+O perfil de produção usa inicialização preguiçosa do Spring. O container também abre a porta pública imediatamente e mantém a primeira requisição aguardando enquanto o Neon sai do modo ocioso e o Hibernate prepara o esquema. Por isso, a primeira chamada à API depois de um período sem uso pode levar alguns segundos a mais.
+
 ## Observações de produção
 
 - O scheduler de reprocessamento de localidades fica desligado por padrão na Vercel, evitando execução duplicada quando houver várias instâncias.

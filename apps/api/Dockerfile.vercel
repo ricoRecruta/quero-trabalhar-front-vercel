@@ -11,6 +11,10 @@ FROM eclipse-temurin:21-jre
 
 WORKDIR /app
 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends socat \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY --from=build /app/target/*.jar app.jar
 
 ENV SPRING_PROFILES_ACTIVE=prod
@@ -18,4 +22,7 @@ ENV SERVER_FORWARD_HEADERS_STRATEGY=framework
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "java -Dserver.port=${PORT:-8080} -jar app.jar"]
+# Vercel expects $PORT to accept connections in roughly 30 seconds. The proxy
+# binds immediately and keeps the first request waiting while Spring/Hibernate
+# wakes Neon and prepares the schema on the internal port.
+CMD ["sh", "-c", "java -XX:+UseSerialGC -XX:TieredStopAtLevel=1 -Dserver.port=8081 -jar app.jar & exec socat TCP-LISTEN:${PORT:-8080},fork,reuseaddr TCP:127.0.0.1:8081,retry=120,interval=1"]

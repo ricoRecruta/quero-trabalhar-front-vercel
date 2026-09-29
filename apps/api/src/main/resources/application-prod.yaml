@@ -1,4 +1,9 @@
 spring:
+  main:
+    # Vercel containers must open $PORT in roughly 30 seconds. Defer
+    # repository/service initialization until the first request so Tomcat is
+    # ready while Neon wakes up and Hibernate prepares the schema.
+    lazy-initialization: true
   datasource:
     # Vercel Marketplace/Neon provides PGHOST, PGDATABASE, PGUSER and
     # PGPASSWORD. Explicit DB_* variables remain supported for other
@@ -6,6 +11,12 @@ spring:
     url: "${DB_URL:jdbc:postgresql://${PGHOST}:5432/${PGDATABASE}?sslmode=require}"
     username: "${DB_USERNAME:${PGUSER}}"
     password: "${DB_PASSWORD:${PGPASSWORD}}"
+    hikari:
+      initialization-fail-timeout: -1
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: lazy
   jpa:
     hibernate:
       ddl-auto: ${JPA_DDL_AUTO:update}
