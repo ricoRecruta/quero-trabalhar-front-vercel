@@ -49,7 +49,7 @@ Em outro terminal:
 npm run dev:web
 ```
 
-O Vite encaminha `/login` e `/api/*` para `http://localhost:8080`.
+O Vite encaminha `/login` e `/api/*` para `http://localhost:8080`. O frontend usa `/api/login` como rota canônica de autenticação.
 
 ## Comandos
 

@@ -82,6 +82,29 @@ class SecurityConfigIntegrationTest {
     }
 
     @Test
+    void deveAutenticarUsuarioCriadoPeloCadastroPublico() throws Exception {
+        String email = "novo.usuario.security@teste.com";
+        String senha = "SenhaCadastro@123";
+
+        mockMvc.perform(post("/api/usuarios/cadastrar")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(Map.of(
+                                "cpf", "52998224725",
+                                "nome", "Novo Usuario",
+                                "telefone", "83999990003",
+                                "email", email,
+                                "senha", senha
+                        ))))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(post("/api/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(credenciaisJson(email, senha)))
+                .andExpect(status().isOk())
+                .andExpect(header().string(HttpHeaders.AUTHORIZATION, startsWith("Bearer ")));
+    }
+
+    @Test
     void deveNegarLoginComCredenciaisInvalidas() throws Exception {
         mockMvc.perform(post("/login")
                         .contentType(MediaType.APPLICATION_JSON)

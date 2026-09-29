@@ -76,6 +76,7 @@ public class Usuario {
         this.telefone = usuario.telefone();
         this.email = usuario.email();
         this.senha = usuario.senha();
+        addProfile(Role.USER);
     }
 
     protected Usuario() {}

@@ -41,7 +41,8 @@ public class SecurityConfig {
             "/v3/api-docs/**"
     };
 
-    private static final String LOGIN_PATH = "/login";
+    private static final String LOGIN_PATH = "/api/login";
+    private static final String LEGACY_LOGIN_PATH = "/login";
     private static final String ADMIN_MATCHER = "/api/admin/**";
 
     private static final String[] PUBLIC_POST_MATCHES = {
@@ -107,7 +108,7 @@ public class SecurityConfig {
         JWTAuthenticationFilter authenticationFilter =
                 new JWTAuthenticationFilter(LOGIN_PATH, authenticationManager, jwtUtil);
         authenticationFilter.setRequiresAuthenticationRequestMatcher(
-                new RegexRequestMatcher("^/login$", HttpMethod.POST.name())
+                new RegexRequestMatcher("^/(?:api/)?login/?$", HttpMethod.POST.name())
         );
 
         JWTAuthorizationFilter authorizationFilter =
@@ -154,7 +155,7 @@ public class SecurityConfig {
                         auth.requestMatchers(DEV_ONLY_PUBLIC_MATCHES).permitAll();
                     }
 
-                    auth.requestMatchers(HttpMethod.POST, LOGIN_PATH).permitAll()
+                    auth.requestMatchers(HttpMethod.POST, LOGIN_PATH, LEGACY_LOGIN_PATH).permitAll()
                             .requestMatchers(HttpMethod.POST, PUBLIC_POST_MATCHES).permitAll()
                             .requestMatchers(HttpMethod.GET, PUBLIC_GET_MATCHES).permitAll()
                             .requestMatchers(

@@ -8,7 +8,7 @@ import { ApiError, api, clearToken, requestRaw, setToken } from "./client";
  * "00 - Autenticação / Login". Por isso usamos requestRaw aqui.
  */
 export async function login({ email, password }) {
-  const resposta = await requestRaw("/login", {
+  const resposta = await requestRaw("/api/login", {
     method: "POST",
     auth: false,
     body: { email, password },
