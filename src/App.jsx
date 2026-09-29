@@ -18,23 +18,27 @@ export default function App() {
   const [telaAuth, setTelaAuth] = useState("login"); // "login" | "cadastro"
   const [autenticado, setAutenticado] = useState(estaAutenticado);
   const [usuario, setUsuario] = useState(null);
+  const [administrador, setAdministrador] = useState(false);
 
   // Se já existe um token de uma sessão anterior (localStorage), tenta
   // recuperar os dados do usuário. Se o token estiver vencido ou inválido,
   // a API responde 401 e voltamos pra tela de login.
   useEffect(() => {
     if (!estaAutenticado()) return;
-    auth
-      .usuarioAtual()
-      .then(setUsuario)
+    Promise.all([auth.usuarioAtual(), auth.ehAdministrador()])
+      .then(([dadosUsuario, ehAdmin]) => {
+        setUsuario(dadosUsuario);
+        setAdministrador(ehAdmin);
+      })
       .catch(() => {
         auth.logout();
         setAutenticado(false);
       });
   }, []);
 
-  function handleEntrar(dadosUsuario) {
+  function handleEntrar(dadosUsuario, ehAdmin) {
     setUsuario(dadosUsuario);
+    setAdministrador(ehAdmin);
     setAutenticado(true);
     setAbaAtiva("vagas");
   }
@@ -42,12 +46,14 @@ export default function App() {
   function handleSair() {
     auth.logout();
     setUsuario(null);
+    setAdministrador(false);
     setAutenticado(false);
     setTelaAuth("login");
   }
 
   /** Navegação por clique no menu: sempre sai do modo de edição de vaga. */
   function handleMudarAba(novaAba) {
+    if (novaAba === "admin" && !administrador) return;
     setVagaEditando(null);
     setAbaAtiva(novaAba);
   }
@@ -89,7 +95,7 @@ export default function App() {
       case "perfil":
         return <Perfil />;
       case "admin":
-        return <Admin />;
+        return administrador ? <Admin /> : <Vagas />;
       case "vagas":
       default:
         return <Vagas />;
@@ -109,6 +115,7 @@ export default function App() {
       abaAtiva={abaAtiva}
       onMudarAba={handleMudarAba}
       usuario={usuario?.nome ?? "Usuário"}
+      administrador={administrador}
       onSair={handleSair}
     >
       {renderConteudo()}

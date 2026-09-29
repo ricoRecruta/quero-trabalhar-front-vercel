@@ -30,8 +30,11 @@ export default function Login({ onEntrar, onIrParaCadastro }) {
       // A API espera { email, password } e devolve o JWT no cabeçalho
       // Authorization da resposta — ver src/api/auth.js.
       await auth.login({ email, password: senha });
-      const usuario = await auth.usuarioAtual();
-      onEntrar?.(usuario);
+      const [usuario, administrador] = await Promise.all([
+        auth.usuarioAtual(),
+        auth.ehAdministrador(),
+      ]);
+      onEntrar?.(usuario, administrador);
     } catch (err) {
       setErro(
         err instanceof ApiError

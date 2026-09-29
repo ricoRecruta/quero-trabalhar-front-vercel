@@ -48,3 +48,27 @@ export function logout() {
 export function usuarioAtual() {
   return api.get("/api/usuarios/me");
 }
+
+/**
+ * Confirma se a sessão atual possui o papel ADMIN.
+ *
+ * O DTO de /api/usuarios/me e o JWT não expõem os papéis do usuário. Por isso,
+ * usamos um endpoint administrativo protegido como verificação de permissão:
+ * usuários comuns recebem 401/403 e administradores recebem uma resposta 2xx.
+ */
+export async function ehAdministrador() {
+  const resposta = await requestRaw("/api/admin/usuarios", {
+    query: { page: 0, size: 1 },
+  });
+
+  if (resposta.status === 401 || resposta.status === 403) return false;
+  if (!resposta.ok) {
+    throw new ApiError(
+      resposta.status,
+      null,
+      `Não foi possível verificar as permissões (HTTP ${resposta.status}).`
+    );
+  }
+
+  return true;
+}

@@ -18,7 +18,16 @@ const ABAS = [
   { id: "admin", label: "Admin" },
 ];
 
-export default function Layout({ abaAtiva, onMudarAba, usuario = "Usuário", onSair, children }) {
+export default function Layout({
+  abaAtiva,
+  onMudarAba,
+  usuario = "Usuário",
+  administrador = false,
+  onSair,
+  children,
+}) {
+  const abasVisiveis = administrador ? ABAS : ABAS.filter((aba) => aba.id !== "admin");
+
   return (
     <div className="layout-page">
       {/* Barra superior */}
@@ -31,7 +40,7 @@ export default function Layout({ abaAtiva, onMudarAba, usuario = "Usuário", onS
 
       {/* Navegação */}
       <nav className="layout-nav">
-        {ABAS.map((aba) => (
+        {abasVisiveis.map((aba) => (
           <button
             key={aba.id}
             type="button"
