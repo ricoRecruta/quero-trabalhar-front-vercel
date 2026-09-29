@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Optional;
@@ -25,7 +26,7 @@ public class JWTUtil {
     private Long expiration;
 
     @Value("${jwt.secret}")
-    private String jwtSecretBase64;
+    private String jwtSecret;
 
     public String generateToken(String email) {
         return Jwts.builder()
@@ -36,7 +37,20 @@ public class JWTUtil {
     }
 
     public SecretKey getSecretKey() {
-        byte[] keyBytes = Base64.getDecoder().decode(jwtSecretBase64);
+        byte[] keyBytes;
+
+        try {
+            byte[] decoded = Base64.getDecoder().decode(jwtSecret);
+            keyBytes = decoded.length >= 64
+                    ? decoded
+                    : jwtSecret.getBytes(StandardCharsets.UTF_8);
+        } catch (IllegalArgumentException invalidBase64) {
+            // Vercel secrets are commonly generated as UUIDs or other random
+            // strings. They are already high-entropy key material even when
+            // they are not encoded as Base64.
+            keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
+        }
+
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
