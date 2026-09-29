@@ -204,6 +204,7 @@ class OportunidadeLocalidadePendenteServiceTest {
                 null,
                 null,
                 "Curitiba, PR",
+                null,
                 false
         );
 
@@ -273,6 +274,7 @@ class OportunidadeLocalidadePendenteServiceTest {
                 null,
                 null,
                 "  Belo Horizonte  ",
+                null,
                 false
         );
 
@@ -328,6 +330,7 @@ class OportunidadeLocalidadePendenteServiceTest {
                 null,
                 null,
                 "  Vale do Silicio Paraibano  ",
+                null,
                 false
         );
 
@@ -506,6 +509,7 @@ class OportunidadeLocalidadePendenteServiceTest {
                 estadoId,
                 cidadeId,
                 null,
+                null,
                 false
         );
     }
@@ -519,6 +523,7 @@ class OportunidadeLocalidadePendenteServiceTest {
                 null,
                 null,
                 localidadeTexto,
+                null,
                 publicarComoEmpresa
         );
     }

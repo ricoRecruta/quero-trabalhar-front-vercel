@@ -12,6 +12,7 @@ import com.QueroTrabalhar.domain.enums.Modalidade;
 import com.QueroTrabalhar.domain.enums.StatusVinculoEmpresa;
 import com.QueroTrabalhar.repository.CidadeRepository;
 import com.QueroTrabalhar.repository.EstadoRepository;
+import com.QueroTrabalhar.repository.EmpresaRepository;
 import com.QueroTrabalhar.repository.LocalidadePendenteRepository;
 import com.QueroTrabalhar.repository.OportunidadeDeEmpregoRepository;
 import com.QueroTrabalhar.repository.PaisRepository;
@@ -55,6 +56,9 @@ class OportunidadeEmpresaFeatureServiceTest {
 
     @Mock
     private CidadeRepository cidadeRepository;
+
+    @Mock
+    private EmpresaRepository empresaRepository;
 
     @Mock
     private LocalidadePendenteRepository localidadePendenteRepository;
@@ -138,6 +142,39 @@ class OportunidadeEmpresaFeatureServiceTest {
     }
 
     @Test
+    void deveCriarOportunidadeParaEmpresaEscolhidaPeloAdmin() {
+        Empresa empresa = criarEmpresa(20L, "Empresa escolhida");
+        PerfilRecrutador perfilRecrutador = criarPerfilRecrutador(10L, null, null);
+        TipoDeEmprego tipoDeEmprego = criarTipoDeEmpregoAprovado(1L);
+        Pais pais = criarPais(1L);
+        OportunidadeDeEmpregoRequestDTO dto = new OportunidadeDeEmpregoRequestDTO(
+                "Vaga administrativa",
+                tipoDeEmprego.getId(),
+                Modalidade.REMOTO,
+                pais.getId(),
+                null,
+                null,
+                null,
+                empresa.getId(),
+                false
+        );
+
+        prepararMocksBasicosComLocalidade(perfilRecrutador, tipoDeEmprego, pais);
+        when(empresaRepository.findByIdAndLocalidadePaisIsNotNull(empresa.getId()))
+                .thenReturn(Optional.of(empresa));
+        prepararMockSaveOportunidade();
+
+        OportunidadeDeEmpregoResponseDTO resposta =
+                oportunidadeDeEmpregoService.criarOportunidadeDeEmprego(dto);
+
+        ArgumentCaptor<OportunidadeDeEmprego> oportunidadeCaptor =
+                ArgumentCaptor.forClass(OportunidadeDeEmprego.class);
+        verify(oportunidadeDeEmpregoRepository).save(oportunidadeCaptor.capture());
+        assertSame(empresa, oportunidadeCaptor.getValue().getEmpresa());
+        assertEquals(empresa.getId(), resposta.empresaId());
+    }
+
+    @Test
     void deveBloquearPublicacaoComoEmpresaQuandoRecrutadorNaoPossuirEmpresaVinculada() {
         PerfilRecrutador perfilRecrutador = criarPerfilRecrutador(10L, null, null);
         TipoDeEmprego tipoDeEmprego = criarTipoDeEmpregoAprovado(1L);
@@ -190,6 +227,7 @@ class OportunidadeEmpresaFeatureServiceTest {
                 tipoDeEmprego.getId(),
                 Modalidade.HIBRIDO,
                 pais.getId(),
+                null,
                 null,
                 null,
                 null,
@@ -261,6 +299,7 @@ class OportunidadeEmpresaFeatureServiceTest {
                 1L,
                 Modalidade.REMOTO,
                 1L,
+                null,
                 null,
                 null,
                 null,

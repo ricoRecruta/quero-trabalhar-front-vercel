@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Formulario.css";
-import { mensagemDeErro, oportunidades, recrutadores } from "../../api";
+import { empresas, mensagemDeErro, oportunidades } from "../../api";
 import SeletorLocalidade from "../shared/SeletorLocalidade";
 import SeletorTipoDeEmprego from "../shared/SeletorTipoDeEmprego";
 
@@ -26,7 +26,7 @@ function estadoInicial(vagaEditando) {
       },
       usarTextoLivre: false,
       localidadeTexto: "",
-      publicarComoEmpresa: false,
+      empresaId: null,
     };
   }
   return {
@@ -43,7 +43,7 @@ function estadoInicial(vagaEditando) {
     },
     usarTextoLivre: false,
     localidadeTexto: vagaEditando.localidadeTextoOriginal ?? "",
-    publicarComoEmpresa: Boolean(vagaEditando.empresaId),
+    empresaId: vagaEditando.empresaId ?? null,
   };
 }
 
@@ -57,7 +57,7 @@ function estadoInicial(vagaEditando) {
 export default function CriarVaga({ vagaEditando, onConcluir, onCancelar }) {
   const editando = Boolean(vagaEditando);
   const [form, setForm] = useState(() => estadoInicial(vagaEditando));
-  const [empresaAprovada, setEmpresaAprovada] = useState(false);
+  const [empresasDisponiveis, setEmpresasDisponiveis] = useState([]);
   const [salvando, setSalvando] = useState(false);
   const [excluindo, setExcluindo] = useState(false);
   const [erro, setErro] = useState("");
@@ -67,18 +67,15 @@ export default function CriarVaga({ vagaEditando, onConcluir, onCancelar }) {
   // de vaga (ou ir de editar pra criar) sempre remonta o componente do zero
   // e o useState(() => estadoInicial(...)) acima já parte do valor certo.
 
-  // publicarComoEmpresa só faz sentido oferecer se o recrutador tiver um
-  // vínculo APROVADO com alguma empresa — senão a API aceitaria o campo mas
-  // a publicação continuaria pessoal mesmo assim.
   useEffect(() => {
     let ativo = true;
-    recrutadores
-      .buscarMinhaEmpresa()
+    empresas
+      .listar({ size: 100 })
       .then((dados) => {
-        if (ativo) setEmpresaAprovada(dados?.statusVinculoEmpresa === "APROVADO");
+        if (ativo) setEmpresasDisponiveis(dados.itens);
       })
       .catch(() => {
-        if (ativo) setEmpresaAprovada(false);
+        if (ativo) setEmpresasDisponiveis([]);
       });
     return () => {
       ativo = false;
@@ -94,7 +91,8 @@ export default function CriarVaga({ vagaEditando, onConcluir, onCancelar }) {
       descricao: form.descricao,
       tipoDeEmpregoId: form.tipoDeEmpregoId,
       modalidade: form.modalidade,
-      publicarComoEmpresa: form.publicarComoEmpresa,
+      empresaId: form.empresaId,
+      publicarComoEmpresa: false,
     };
 
     if (form.usarTextoLivre) {
@@ -195,6 +193,26 @@ export default function CriarVaga({ vagaEditando, onConcluir, onCancelar }) {
         />
       </div>
 
+      <div className="formulario-campo" style={{ marginBottom: 24 }}>
+        <label htmlFor="empresa" className="formulario-label">
+          Empresa
+        </label>
+        <select
+          id="empresa"
+          className="formulario-select"
+          value={form.empresaId ?? ""}
+          onChange={(e) => atualizarCampo("empresaId", e.target.value ? Number(e.target.value) : null)}
+          disabled={editando}
+        >
+          <option value="">Publicação sem empresa</option>
+          {empresasDisponiveis.map((empresa) => (
+            <option key={empresa.id} value={empresa.id}>
+              {empresa.nome}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div className="formulario-toggle-linha">
         <label className="formulario-toggle">
           <input
@@ -232,22 +250,6 @@ export default function CriarVaga({ vagaEditando, onConcluir, onCancelar }) {
           value={form.localidade}
           onChange={(v) => atualizarCampo("localidade", v)}
         />
-      )}
-
-      {empresaAprovada && (
-        <div className="formulario-toggle-linha">
-          <label className="formulario-toggle">
-            <input
-              type="checkbox"
-              checked={form.publicarComoEmpresa}
-              onChange={(e) => atualizarCampo("publicarComoEmpresa", e.target.checked)}
-            />
-            <span className="formulario-toggle-trilho" />
-          </label>
-          <span className="formulario-toggle-texto">
-            Publicar em nome da empresa vinculada ao meu perfil
-          </span>
-        </div>
       )}
 
       {erro && (

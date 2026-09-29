@@ -19,6 +19,7 @@ import com.QueroTrabalhar.domain.enums.Modalidade;
 import com.QueroTrabalhar.domain.enums.StatusVinculoEmpresa;
 import com.QueroTrabalhar.domain.enums.TipoRecursoLocalidadePendente;
 import com.QueroTrabalhar.repository.CidadeRepository;
+import com.QueroTrabalhar.repository.EmpresaRepository;
 import com.QueroTrabalhar.repository.EstadoRepository;
 import com.QueroTrabalhar.repository.LocalidadePendenteRepository;
 import com.QueroTrabalhar.repository.OportunidadeDeEmpregoRepository;
@@ -59,6 +60,7 @@ public class OportunidadeDeEmpregoService {
     private final PaisRepository paisRepository;
     private final EstadoRepository estadoRepository;
     private final CidadeRepository cidadeRepository;
+    private final EmpresaRepository empresaRepository;
     private final LocalidadePendenteRepository localidadePendenteRepository;
     private final LocalidadeResolucaoService localidadeResolucaoService;
     private final RegistroLocalidadePendenteService registroLocalidadePendenteService;
@@ -70,6 +72,7 @@ public class OportunidadeDeEmpregoService {
             PaisRepository paisRepository,
             EstadoRepository estadoRepository,
             CidadeRepository cidadeRepository,
+            EmpresaRepository empresaRepository,
             LocalidadePendenteRepository localidadePendenteRepository,
             LocalidadeResolucaoService localidadeResolucaoService,
             RegistroLocalidadePendenteService registroLocalidadePendenteService,
@@ -80,6 +83,7 @@ public class OportunidadeDeEmpregoService {
         this.paisRepository = paisRepository;
         this.estadoRepository = estadoRepository;
         this.cidadeRepository = cidadeRepository;
+        this.empresaRepository = empresaRepository;
         this.localidadePendenteRepository = localidadePendenteRepository;
         this.localidadeResolucaoService = localidadeResolucaoService;
         this.registroLocalidadePendenteService = registroLocalidadePendenteService;
@@ -147,6 +151,7 @@ public class OportunidadeDeEmpregoService {
         TipoDeEmprego tipoDeEmprego = buscarTipoDeEmpregoValido(dto.tipoDeEmpregoId());
         Empresa empresaDaOportunidade = resolverEmpresaDaOportunidade(
                 perfilRecrutador,
+                dto.empresaId(),
                 dto.publicarComoEmpresa()
         );
 
@@ -415,8 +420,16 @@ public class OportunidadeDeEmpregoService {
      */
     private Empresa resolverEmpresaDaOportunidade(
             PerfilRecrutador perfilRecrutador,
+            Long empresaId,
             Boolean publicarComoEmpresa
     ) {
+        if (empresaId != null) {
+            return empresaRepository.findByIdAndLocalidadePaisIsNotNull(empresaId)
+                    .orElseThrow(() -> new ObjectNotFoundException(
+                            "Empresa pública não encontrada. ID: " + empresaId
+                    ));
+        }
+
         if (!Boolean.TRUE.equals(publicarComoEmpresa)) {
             return null;
         }

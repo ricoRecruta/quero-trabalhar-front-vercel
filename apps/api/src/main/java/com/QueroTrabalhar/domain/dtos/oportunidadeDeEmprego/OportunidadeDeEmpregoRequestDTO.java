@@ -12,8 +12,8 @@ import jakarta.validation.constraints.Size;
  *
  * <p>O DTO não expõe {@code recrutadorId} porque a autoria da vaga é definida pelo contexto autenticado do endpoint.
  * A localidade segue a mesma regra do módulo de empresa: IDs estruturados têm precedência sobre texto livre. O campo
- * {@code publicarComoEmpresa} apenas solicita o contexto desejado; a associação final depende das validações de
- * vínculo do recrutador com a empresa.</p>
+ * {@code empresaId} permite que um administrador escolha diretamente uma empresa pública. O campo legado
+ * {@code publicarComoEmpresa} mantém o fluxo baseado no vínculo do recrutador.</p>
  */
 @Schema(name = "OportunidadeDeEmpregoRequestDTO", description = "Dados para criação ou atualização de oportunidade de emprego em fluxo autenticado de recrutador.")
 public record OportunidadeDeEmpregoRequestDTO(
@@ -46,6 +46,10 @@ public record OportunidadeDeEmpregoRequestDTO(
         @Size(max = 255, message = "O texto da localidade deve ter no máximo 255 caracteres.")
         @Schema(description = "Texto livre da localidade. Use quando não houver IDs estruturados. Se a resolução automática não validar a localidade, a oportunidade ficará pendente no fluxo interno e não aparecerá nos endpoints públicos. A confirmação manual da sugestão ainda não está implementada no MVP.", example = "João Pessoa, PB")
         String localidadeTexto,
+
+        @Positive(message = "A empresa informada é inválida.")
+        @Schema(description = "Empresa pública escolhida pelo administrador para publicar a oportunidade.", example = "7")
+        Long empresaId,
 
         @Schema(description = "Quando true, tenta publicar a oportunidade em nome da empresa vinculada ao recrutador autenticado. Exige vínculo aprovado. Quando false ou nulo, a oportunidade permanece pessoal.", example = "true")
         Boolean publicarComoEmpresa

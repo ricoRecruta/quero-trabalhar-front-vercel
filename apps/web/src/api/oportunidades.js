@@ -19,7 +19,7 @@ export async function listar(filtros = {}) {
 /**
  * Cria vaga (exige perfil de recrutador).
  * { descricao, tipoDeEmpregoId, modalidade, paisId, estadoId,
- *   cidadeId, localidadeTexto, publicarComoEmpresa }
+ *   cidadeId, localidadeTexto, empresaId, publicarComoEmpresa }
  */
 export function criar(dados) {
   return api.post("/api/oportunidades", dados);
