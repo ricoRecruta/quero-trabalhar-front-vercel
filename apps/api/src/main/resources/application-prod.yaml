@@ -1,8 +1,11 @@
 spring:
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    # Vercel Marketplace/Neon provides PGHOST, PGDATABASE, PGUSER and
+    # PGPASSWORD. Explicit DB_* variables remain supported for other
+    # managed MySQL/PostgreSQL providers.
+    url: "${DB_URL:jdbc:postgresql://${PGHOST}:5432/${PGDATABASE}?sslmode=require}"
+    username: "${DB_USERNAME:${PGUSER}}"
+    password: "${DB_PASSWORD:${PGPASSWORD}}"
   jpa:
     hibernate:
       ddl-auto: ${JPA_DDL_AUTO:update}

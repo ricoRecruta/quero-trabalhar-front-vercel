@@ -103,13 +103,8 @@ Observações do perfil `local`:
 
 No perfil `prod`, além das variáveis acima, o ambiente precisa fornecer:
 
-- `DB_URL`
-- `DB_USERNAME`
-- `DB_PASSWORD`
-
-Opcionalmente:
-
-- `DB_DRIVER` (default: `com.mysql.cj.jdbc.Driver`)
+- `PGHOST`, `PGDATABASE`, `PGUSER` e `PGPASSWORD` (provisionadas automaticamente pelo Neon no Vercel Marketplace); ou
+- `DB_URL`, `DB_USERNAME` e `DB_PASSWORD` para outro provedor. As variáveis `DB_*` têm precedência.
 
 > Sem uma `GOOGLE_MAPS_API_KEY` válida, fluxos de resolução automática por integração externa podem manter a localidade em estado pendente.
 

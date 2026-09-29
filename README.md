@@ -74,7 +74,9 @@ O `vercel.json` usa Vercel Services para publicar os dois aplicativos no mesmo d
 
 ### 1. Banco de dados
 
-Containers da Vercel não têm disco persistente. Conecte um banco MySQL ou PostgreSQL gerenciado e cadastre estas variáveis no projeto:
+Containers da Vercel não têm disco persistente. A configuração recomendada é criar um Neon PostgreSQL em **Storage** no painel da Vercel e conectá-lo ao projeto. A integração injeta automaticamente `PGHOST`, `PGDATABASE`, `PGUSER` e `PGPASSWORD`, que o backend consome diretamente.
+
+Para outro provedor MySQL ou PostgreSQL, cadastre as variáveis `DB_*` abaixo. Elas têm precedência sobre as variáveis do Neon:
 
 | Variável | Obrigatória | Descrição |
 | --- | --- | --- |
@@ -87,7 +89,7 @@ Containers da Vercel não têm disco persistente. Conecte um banco MySQL ou Post
 | `JPA_DDL_AUTO` | não | padrão `update`; após criar o esquema, prefira `validate` |
 | `LOCALIDADE_PENDENTE_REPROCESSAMENTO_ENABLED` | não | mantenha `false` em ambiente com autoscaling |
 
-Exemplos de `DB_URL`:
+As três variáveis `DB_*` são opcionais quando o Neon está conectado. Exemplos de `DB_URL` para outro provedor:
 
 ```properties
 DB_URL=jdbc:postgresql://host:5432/quero_trabalhar?sslmode=require
@@ -100,8 +102,9 @@ Não use H2 em produção: os serviços podem escalar para zero ou criar mais de
 
 1. Importe este repositório na Vercel.
 2. Selecione o modo **Services** quando a Vercel solicitar a importação multi-serviço.
-3. Cadastre as variáveis de produção e preview.
-4. Faça o deploy a partir da raiz; cada serviço será construído independentemente.
+3. Conecte um Neon PostgreSQL em **Storage** ou cadastre `DB_URL`, `DB_USERNAME` e `DB_PASSWORD` para outro banco.
+4. Cadastre `JWT_SECRET` em Production e Preview.
+5. Faça o deploy a partir da raiz; cada serviço será construído independentemente.
 
 O frontend usa caminhos relativos para a API, por isso previews e domínios personalizados funcionam sem trocar `VITE_API_BASE_URL` e sem CORS.
 
